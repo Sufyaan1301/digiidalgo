@@ -8,6 +8,19 @@
 <body>
 <div class="container mx-auto mt-6">
     <div class="row justify-center ">
+      @foreach ($citizens as $citizen)
+        <!-- <p>{{ $citizen->nik }}</p> -->
+        <!-- <p>{{ $citizen->full_name }}</p>
+        <p>{{ $citizen->kk  }}</p>
+        <p>{{ $citizen->address }}</p>
+        <p>{{ $citizen->rt }}</p>
+        <p>{{ $citizen->rw }}</p>
+        <p>{{ $citizen->kelurahan }}</p>
+        <p>{{ $citizen->kecamatan }}</p>
+        <p>{{ $citizen->rw }}</p>
+        <p>{{ $citizen->kota }}</p>
+        <p>{{ $citizen->provinsi }}</p> -->
+      @endforeach
     <form class="w-1/2">
   <div class="space-y-12">
     <!--<div class="border-b border-gray-900/10 pb-12">

@@ -9,3 +9,5 @@ Route::get('/', function () {
 Route::get('/inputdata', [FormController::class,'Enkripsi']);
 Route::get('/inputgambar', [FormController::class,'tampilanform']);
 Route::get('/test2', [FormController::class,'dekripsi']);
+
+Route::get('/citizen', [FormController::class,'index']);
