@@ -2,13 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\CitizenImgController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/inputdata', [FormController::class,'Enkripsi']);
-Route::get('/inputgambar', [FormController::class,'tampilanform']);
-Route::get('/test2', [FormController::class,'dekripsi']);
-Route::get('/citizen', [FormController::class,'index']);
-Route::get('/update', [FormController::class,'formupdate']);
-Route::get('/destroy', [FormController::class,'formdelete']);
+Route::resource('Form',CitizenImgController::class);
