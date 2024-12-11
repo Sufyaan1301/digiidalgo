@@ -8,7 +8,7 @@
 <body>
   <div class="container mx-auto mt-6">
     <div class="row justify-center">
-      <form class="w-1/2" enctype="multipart/form-data" method="POST" action="{{route('update')}}">
+      <form class="w-1/2" enctype="multipart/form-data" method="POST" action="{{route('Citizens_img.update')}}">
         @method("PUT")
           <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-base font-semibold text-gray-900">Update dokumen penduduk</h2>

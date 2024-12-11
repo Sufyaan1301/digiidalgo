@@ -7,4 +7,4 @@ use App\Http\Controllers\CitizenImgController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('Form',CitizenImgController::class);
+Route::resource('Citizens_img',CitizenImgController::class)->names("citizens_img");
