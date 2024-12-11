@@ -14,8 +14,8 @@ class FormController extends Controller
     public function tampilanform(){
         return view('formimage');
     }
-    public function dekripsi(){
-        
+    public function formupdate(){
+        return view('Form.update');
     }
 }
 
