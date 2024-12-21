@@ -8,3 +8,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('Citizens_img',CitizenImgController::class)->names("citizens_img");
+
+

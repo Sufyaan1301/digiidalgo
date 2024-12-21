@@ -19,8 +19,7 @@
 
     <form action="{{ route('citizens_img.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
       @csrf
-
-      <!-- Input KTP -->
+            <!-- Input KTP -->
       <div>
         <label for="ktp" class="block text-sm font-medium text-gray-700">KTP</label>
         <input 
