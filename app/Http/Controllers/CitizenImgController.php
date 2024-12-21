@@ -104,10 +104,10 @@ class CitizenImgController extends Controller
     {
         $CitizenImg = CitizenImg::findOrFail($id);
         $request->validate([
-            'ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'kk' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'akta' => 'required|image|mimes:jpeg,png,jpg,|max:2048',
-            'kia' => 'required|image|mimes:jpeg,png,jpg,|max:2048',
+            'ktp' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'kk' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'akta' => 'image|mimes:jpeg,png,jpg,|max:2048',
+            'kia' => 'image|mimes:jpeg,png,jpg,|max:2048',
         ]);
 
         $input = $request->all();
@@ -169,6 +169,6 @@ class CitizenImgController extends Controller
         return redirect()->route('citizens_img.index')
             ->with('success', 'CitizenImg deleted successfully');
     }
-    
+
 }
 
