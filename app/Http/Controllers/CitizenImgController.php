@@ -7,233 +7,168 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Models\CitizenImg;
 
-
-
-  
-
 class CitizenImgController extends Controller
-
 {
-
     /**
-
      * Display a listing of the resource.
-
      *
-
-     * @return \Illuminate\Http\Response
-
+     * @return response()
      */
-
-    public function index()
-
+    public function index(): View
     {
-
-        $Citizens_img = CitizenImg::latest()->paginate(5);
-
-    
-
-        return view('Citizens_img.create',compact('Citizens_img'))
-
+        $Citizens_Img = CitizenImg::latest()->paginate(5);
+        return view('Citizens_img.index', compact('Citizens_Img'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
-
     }
-
-   
-
     /**
-
      * Show the form for creating a new resource.
-
-     *
-
-     * @return \Illuminate\Http\Response
-
      */
-
-    public function create() : View     
+    public function create(): View
     {
-        return view('Citizens_img.create');
-
+        return view('citizens_img.create');
     }
-    /**
 
+    /**
      * Store a newly created resource in storage.
-
-     *
-
-     * @param  \Illuminate\Http\Request  $request
-
-     * @return \Illuminate\Http\Response
-
      */
-
-    public function store(Request $request):RedirectResponse
-
+    public function store(Request $request)
     {
-
         $request->validate([
-
-            'ktp' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-            'kk' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-            'akta' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-            'kia' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
+            'ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'kk' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'akta' => 'required|image|mimes:jpeg,png,jpg,|max:2048',
+            'kia' => 'required|image|mimes:jpeg,png,jpg,|max:2048',
         ]);
 
-  
+        $input = new CitizenImg();
 
-        $input = $request->all();
-
-  
-
-        if ($image = $request->file('image')) {
-
-            $destinationPath = 'image/';
-
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-
-            $image->move($destinationPath, $profileImage);
-
-            $input['image'] = "$profileImage";
-
+        if ($request->hasFile('ktp')) {
+            $ktpFile = $request->file('ktp');
+            $ktpName = time() . '_ktp.' . $ktpFile->getClientOriginalExtension();
+            $ktpFile->move(public_path('images'), $ktpName);
+            $input->ktp = $ktpName;
         }
 
-    
+        if ($request->hasFile('kk')) {
+            $kkFile = $request->file('kk');
+            $kkName = time() . '_kk.' . $kkFile->getClientOriginalExtension();
+            $kkFile->move(public_path('images'), $kkName);
+            $input->kk = $kkName;
+        }
 
-        CitizenImg::create($input);
+        if ($request->hasFile('akta')) {
+            $aktaFile = $request->file('akta');
+            $aktaName = time() . '_akta.' . $aktaFile->getClientOriginalExtension();
+            $aktaFile->move(public_path('images'), $aktaName);
+            $input->akta = $aktaName;
+        }
 
-     
-        return redirect()->route('Citizens_img.create')->with('succsess','Product created Successfully.');
+        if ($request->hasFile('kia')) {
+            $kiaFile = $request->file('kia');
+            $kiaName = time() . '_kia.' . $kiaFile->getClientOriginalExtension();
+            $kiaFile->move(public_path('images'), $kiaName);
+            $input->kia = $kiaName;
+        }
 
+        $input->save();
+
+
+        return redirect()->route('citizens_img.index')
+            ->with('success', 'CitizenImg updated successfully');
     }
 
-     
 
     /**
-
      * Display the specified resource.
-
-     *
-
-     * @param  \App\CitizenImg  $product
-
-     * @return \Illuminate\Http\Response
-
      */
-
-    public function show(CitizenImg $product):View
-
+    public function show($id): View
     {
-
-        return view('Citizens_img.create',compact('product'));
-
+        // algoritma dekrip img
+        $CitizenImg = CitizenImg::findOrFail($id);
+        return view('citizens_img.show', compact('CitizenImg'));
     }
 
-     
-
     /**
-
      * Show the form for editing the specified resource.
-
-     *
-
-     * @param  \App\Product  $product
-
-     * @return \Illuminate\Http\Response
-
      */
-
-    public function edit(CitizenImg $product):View
-
+    public function edit($id): View
     {
-
-        return view('Citizens_img.edit',compact('product'));
-
+        $CitizenImg = CitizenImg::findOrFail($id);
+        return view('citizens_img.edit', compact('CitizenImg'));
     }
 
-    
-
     /**
-
      * Update the specified resource in storage.
-
-     *
-
-     * @param  \Illuminate\Http\Request  $request
-
-     * @param  \App\Product  $product
-
-     * @return \Illuminate\Http\Response
-
      */
-
-    public function update(Request $request, CitizenImg $product):RedirectResponse
-
+    public function update(Request $request, $id): RedirectResponse
     {
-
+        $CitizenImg = CitizenImg::findOrFail($id);
         $request->validate([
-
-            'name' => 'required',
-
-            'detail' => 'required'
-
+            'ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'kk' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'akta' => 'required|image|mimes:jpeg,png,jpg,|max:2048',
+            'kia' => 'required|image|mimes:jpeg,png,jpg,|max:2048',
         ]);
-
-  
 
         $input = $request->all();
 
-  
-
-        if ($image = $request->file('image')) {
-
-            $destinationPath = 'image/';
-
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-
-            $image->move($destinationPath, $profileImage);
-
-            $input['image'] = "$profileImage";
-
-        }else{
-
-            unset($input['image']);
-
+        if ($request->hasFile('ktp')) {
+            $ktpFile = $request->file('ktp');
+            $ktpName = time() . '_ktp.' . $ktpFile->getClientOriginalExtension();
+            $ktpFile->move(public_path('images'), $ktpName);
+            $CitizenImg->ktp = $ktpName;
         }
 
-          
+        if ($request->hasFile('kk')) {
+            $kkFile = $request->file('kk');
+            $kkName = time() . '_kk.' . $kkFile->getClientOriginalExtension();
+            $kkFile->move(public_path('images'), $kkName);
+            $CitizenImg->kk = $kkName;
+        }
 
-        $product->update($input);
+        if ($request->hasFile('akta')) {
+            $aktaFile = $request->file('akta');
+            $aktaName = time() . '_akta.' . $aktaFile->getClientOriginalExtension();
+            $aktaFile->move(public_path('images'), $aktaName);
+            $CitizenImg->akta = $aktaName;
+        }
 
-    
+        if ($request->hasFile('kia')) {
+            $kiaFile = $request->file('kia');
+            $kiaName = time() . '_kia.' . $kiaFile->getClientOriginalExtension();
+            $kiaFile->move(public_path('images'), $kiaName);
+            $CitizenImg->kia = $kiaName;
+        }
 
-        return redirect()->route('Citizen_img.update')
+        $CitizenImg->save();
 
-                        ->with('success','Product updated successfully');
 
+        return redirect()->route('citizens_img.index')
+            ->with('success', 'CitizenImg updated successfully');
     }
 
-  
-
-    
-
-    public function destroy(CitizenImg $product):RedirectResponse
-
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id): RedirectResponse
     {
-
-        $product->delete();
-
-     
-
-        return redirect()->route('Citizens_img.create')
-
-                        ->with('success','Product deleted successfully');
-
+        $citizenImg = CitizenImg::findOrFail($id);
+        $files = [
+            $citizenImg->ktp,
+            $citizenImg->kk,
+            $citizenImg->akta,
+            $citizenImg->kia,
+        ];
+        foreach ($files as $file) {
+            $encryptedpath = storage_path('image/images/' . $file);
+            if (file_exists($encryptedpath)) {
+                unlink($encryptedpath);
+            }
+        }
+        $citizenImg->delete();
+        return redirect()->route('citizens_img.index')
+            ->with('success', 'CitizenImg deleted successfully');
     }
-
+    
 }
 
